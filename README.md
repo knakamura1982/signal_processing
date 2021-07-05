@@ -3,6 +3,6 @@
 <ul>
 <li>
   エイリアシングに関するデモ<br/>
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://colab.research.google.com/github/knakamura1982/signal_processing/blob/main/aliasing.ipynb)
+  <a href="http://colab.research.google.com/github/knakamura1982/signal_processing/blob/main/aliasing.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg"></a>
 </li>
 </ul>
