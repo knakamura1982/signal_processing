@@ -181,3 +181,47 @@ def show_continuous_signal(x, trange, vrange=[-1.0, 1.0], title='Sample Signal',
         plt.close()
     else:
         plt.show()
+
+
+# 信号 x を離散時間信号と解釈し，その振幅スペクトルをグラフ表示する
+#   - x: 表示対象の信号（配列）
+#   - fs: サンプリング周波数 [Hz]
+#   - frange: 横軸の表示範囲（-frange [Hz] から frange [Hz] までを表示）
+#   - vrange: 縦軸の表示範囲（デフォルトでは 0〜1）
+#   - title: グラフタイトル
+#   - s: 何秒後にグラフを閉じるか（s<=0 のときは手動で閉じる）
+def show_discrete_amplitude_spectrum(x, fs, frange, vrange=[0.0, 1.0], title='Amplitude Spectrum', s=0):
+
+    # 縦軸の目盛りの定義
+    vticks = [0.0] * 5
+    for i in range(len(vticks)):
+        vticks[i] = vrange[0] + (vrange[1] - vrange[0]) * i / (len(vticks) - 1)
+
+    # 振幅スペクトルを計算
+    N = len(x)  # 信号長
+    c = np.abs(np.fft(x)) / N # フーリエ係数を求め，その絶対値を取得
+    Nf = (frange * N) // fs
+    if Nf < N // 2:
+        s = np.concatenate((c[-Nf : ], c[ : Nf]), axis=0)
+    else:
+        s = np.zeros(2 * Nf)
+        s[ : N // 2] = c[ : N // 2]
+        s[-N // 2 : ] = c[-N // 2 : ]
+        s = np.concatenate((s[-Nf : ], s[ : Nf]), axis=0)
+
+    # グラフを作成
+    plt.figure(figsize=(12, 4))
+    plt.title(title)
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Amplitude')
+    plt.yticks(vticks)
+    plt.ylim(vrange)
+    plt.grid()
+    plt.plot(np.arange(-frange, frange, fs / N), s)
+
+    # グラフを表示
+    if s > 0:
+        plt.pause(s)
+        plt.close()
+    else:
+        plt.show()
