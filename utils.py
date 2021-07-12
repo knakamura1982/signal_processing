@@ -199,15 +199,15 @@ def show_discrete_amplitude_spectrum(x, fs, frange, vrange=[0.0, 1.0], title='Am
 
     # 振幅スペクトルを計算
     N = len(x)  # 信号長
-    c = np.abs(np.fft(x)) / N # フーリエ係数を求め，その絶対値を取得
+    c = np.abs(np.fft.fft(x)) / N # フーリエ係数を求め，その絶対値を取得
     Nf = (frange * N) // fs
     if Nf < N // 2:
-        s = np.concatenate((c[-Nf : ], c[ : Nf]), axis=0)
+        c_ = np.concatenate((c[-Nf : ], c[ : Nf]), axis=0)
     else:
-        s = np.zeros(2 * Nf)
-        s[ : N // 2] = c[ : N // 2]
-        s[-N // 2 : ] = c[-N // 2 : ]
-        s = np.concatenate((s[-Nf : ], s[ : Nf]), axis=0)
+        c_ = np.zeros(2 * Nf)
+        c_[ : N // 2] = c[ : N // 2]
+        c_[-N // 2 : ] = c[-N // 2 : ]
+        c_ = np.concatenate((c_[-Nf : ], c_[ : Nf]), axis=0)
 
     # グラフを作成
     plt.figure(figsize=(12, 4))
@@ -217,7 +217,7 @@ def show_discrete_amplitude_spectrum(x, fs, frange, vrange=[0.0, 1.0], title='Am
     plt.yticks(vticks)
     plt.ylim(vrange)
     plt.grid()
-    plt.plot(np.arange(-frange, frange, fs / N), s)
+    plt.plot(np.arange(-frange, frange, fs / N), c_)
 
     # グラフを表示
     if s > 0:
