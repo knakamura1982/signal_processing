@@ -95,7 +95,7 @@ def show_discrete_signal(x, nrange, vrange=[-1.0, 1.0], title='Sample Signal', s
     if type(x) == dict:
         x_ = np.asarray([(x[n] if n in x.keys() else 0) for n in range(nrange[0], nrange[1])])
     else:
-        x_ = np.asarray(x)
+        x_ = np.asarray([(x[n] if 0 <= n and n < len(x) else 0) for n in range(nrange[0], nrange[1])])
     if x_.dtype == np.complex128:
         # 複素信号の場合
         fig = plt.figure(figsize=(12, 6))
